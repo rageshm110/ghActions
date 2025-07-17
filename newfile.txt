@@ -1,1 +1,1 @@
-New file created as aprt of GitHub Actions training
+New file created as part of GitHub Actions training
