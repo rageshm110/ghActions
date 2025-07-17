@@ -1,0 +1,38 @@
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches:
+        - 'main'
+        - 'feature/*'
+  pull_request:
+    branches:
+        - 'main'
+        - 'feature/*'
+jobs:
+  LogintodockerhubDEV:
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+    - uses: actions/checkout@v3
+    - name: docker login
+      uses: docker/login-action@v2.1.0
+      with:
+       username: ${{secrets.DOCKERHUB_USERNAME}}
+       password: ${{secrets.DOCKERHUB_PASSWORD}}
+    - name: Docker Pull
+      run: docker pull hello-world
+    - name: Docker Tag
+      run: docker tag hello-world rtrm110/hello-world
+    - name: Docker Push
+      run: docker push rtrm110/hello-world
+  LogintodockerhubQA:
+    runs-on: ubuntu-latest
+    environment: QA
+    steps:
+    - uses: actions/checkout@v3
+    - name: docker login
+      uses: docker/login-action@v2.1.0
+      with:
+       username: ${{secrets.DOCKERHUBUSERNAME}}
+       password: ${{secrets.DOCKERHUBPASSWORD}}
