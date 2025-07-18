@@ -1,0 +1,42 @@
+name: parallel_job
+
+on:
+    push:
+        branches: 
+            - 'main'
+            - 'feature/*'
+    pull_request:
+        branches: 
+            - 'main'
+            - 'feature/*'
+    workflow_dispatch:
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Hello World
+              run: echo "Hello, World! from lint step"
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Hello World
+              run: echo "Hello, World! from test step"
+    publish:
+        runs-on: ubuntu-latest
+        needs: [lint, test]
+        steps:
+            - uses: actions/checkout@v3
+            - name: Hello World
+              run: echo "Hello, World! from publish step"
+    deploy:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest, macos-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v3
+            - name: Hello World
+              run: echo "Hello, World! from deploy step on ${{ matrix.os }}"
